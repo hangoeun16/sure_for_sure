@@ -1,0 +1,368 @@
+<!-- RES0216 attribution: the John scenario quotes short excerpts of transcript
+     RES0216 from chicago-aiscience/Clinical_KG_OS_LLM (BSD-3-Clause), with attribution.
+     Full transcript not included; see README.md. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sure for Sure — demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F4F6F5;--white:#FFFFFF;--ink:#16262B;--muted:#5C6E74;--faint:#93A0A2;
+    --hair:#E1E7E5;--hair2:#EDF1EF;--teal:#0E7C86;--teal-soft:#E7F3F3;
+    --ask:#B5641E;--ask-bg:#FBF1E6;--verify:#2C6E9B;--verify-bg:#EAF1F7;--suppress:#5E8065;--suppress-bg:#EEF3EE;
+    --real:#0E7C86;--synth:#8A6BB0;
+    --disp:'Space Grotesk',system-ui,sans-serif;--sans:'Inter',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .app{max-width:1180px;margin:0 auto;padding:clamp(18px,3vw,34px)}
+  .hidden{display:none!important}
+
+  /* top bar */
+  .topbar{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  .logo{display:flex;align-items:center;gap:9px;font-family:var(--disp);font-weight:700;font-size:19px;letter-spacing:-.01em}
+  .logo .chk{width:26px;height:26px;border-radius:7px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .logo .dot{color:var(--ask)}
+  .badge-pill{font-family:var(--mono);font-size:10.5px;color:var(--teal);background:var(--teal-soft);border-radius:999px;padding:4px 11px;font-weight:600}
+
+  /* ---------- SCREEN 1: scenario picker ---------- */
+  .picker-head{text-align:center;margin:8px 0 26px}
+  .picker-head h1{font-family:var(--disp);font-weight:600;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;display:flex;align-items:center;justify-content:center;gap:12px}
+  .picker-head h1 .chk{color:var(--teal)}
+  .picker-head p{color:var(--muted);font-size:14px;max-width:60ch;margin:8px auto 0}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:720px;margin:0 auto}
+  .scard{background:var(--white);border:1.5px solid var(--hair);border-radius:16px;overflow:hidden;cursor:pointer;
+    transition:border-color .18s,box-shadow .18s,transform .18s;display:flex;flex-direction:column}
+  .scard:hover{border-color:var(--teal);box-shadow:0 6px 18px rgba(16,38,43,.07);transform:translateY(-2px)}
+  .scard .thumb{height:118px;background:linear-gradient(135deg,#EEF2F1,#E4EBEA);display:flex;align-items:center;justify-content:center;position:relative}
+  .scard .thumb .dtype{position:absolute;left:12px;top:12px;font-family:var(--mono);font-size:10px;font-weight:600;padding:4px 9px;border-radius:999px;color:#fff}
+  .scard .thumb .prov{position:absolute;right:12px;top:12px;font-family:var(--mono);font-size:9.5px;font-weight:600;padding:3px 8px;border-radius:999px}
+  .prov.real{background:var(--real);color:#fff}.prov.synth{background:var(--synth);color:#fff}
+  .scard .thumb svg{width:34px;height:34px;color:#B9C6C4}
+  .scard .body{padding:14px 16px}
+  .scard .name{font-weight:600;font-size:15px}
+  .scard .meta{font-size:12.5px;color:var(--faint);font-family:var(--mono);margin:2px 0 8px}
+  .scard .desc{font-size:13px;color:var(--muted);font-style:italic;line-height:1.4}
+
+  /* ---------- SCREEN 2: detail split ---------- */
+  .dhead{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  .back{border:1px solid var(--hair);background:var(--white);border-radius:9px;padding:8px 12px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;font-family:var(--sans)}
+  .back:hover{border-color:var(--teal);color:var(--teal)}
+  .pt{display:flex;flex-direction:column;line-height:1.25}
+  .pt .nm{font-weight:600;font-size:16px}
+  .pt .mr{font-family:var(--mono);font-size:11.5px;color:var(--faint)}
+  .prov-inline{margin-left:auto;font-family:var(--mono);font-size:10.5px;display:flex;gap:8px;flex-wrap:wrap}
+  .prov-inline span{padding:3px 9px;border-radius:999px}
+  .prov-inline .r{background:var(--real);color:#fff}.prov-inline .s{background:var(--synth);color:#fff}
+
+  .toggle{display:inline-flex;background:var(--white);border:1px solid var(--hair);border-radius:999px;padding:4px;margin-bottom:16px;gap:2px}
+  .toggle button{border:none;background:transparent;font-family:var(--sans);font-size:13px;font-weight:500;color:var(--muted);padding:8px 16px;border-radius:999px;cursor:pointer}
+  .toggle button.on{background:var(--ink);color:#fff}
+
+  .split{display:grid;grid-template-columns:1fr 1.05fr;gap:16px}
+
+  /* left: transcript */
+  .panel{background:var(--white);border:1px solid var(--hair2);border-radius:16px;padding:18px 20px}
+  .panel h3{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .rec-dot{width:8px;height:8px;border-radius:999px;background:var(--ask);display:inline-block;animation:blink 1.4s infinite}
+  @keyframes blink{50%{opacity:.3}}
+  @media (prefers-reduced-motion:reduce){.rec-dot{animation:none}}
+  .turn{display:flex;gap:10px;margin-bottom:13px;font-size:13.5px;line-height:1.5}
+  .turn .spk{font-family:var(--mono);font-size:11px;font-weight:600;flex:0 0 auto;width:20px;padding-top:2px}
+  .turn.d .spk{color:var(--faint)}.turn.p .spk{color:var(--teal)}
+  .turn .tx{color:var(--ink)}
+  .turn.claim .tx{background:#FCF3C8;border-radius:6px;padding:2px 6px;margin:-2px -6px}
+  .turn.p .tx{font-weight:450}
+
+  /* right: options */
+  .opts .subline{font-size:13px;color:var(--muted);margin-bottom:14px}
+  .stats{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .stat{flex:1;min-width:90px;background:var(--white);border:1px solid var(--hair2);border-radius:11px;padding:10px 12px}
+  .stat .n{font-family:var(--mono);font-size:20px;font-weight:600}
+  .stat .l{font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
+  .stat.a .n{color:var(--ask)}.stat.v .n{color:var(--verify)}.stat.s .n{color:var(--suppress)}
+
+  .card{background:var(--white);border:1px solid var(--hair2);border-radius:14px;padding:15px 17px;margin-bottom:11px;border-left:3px solid var(--edge)}
+  .card.ask{--edge:var(--ask)}.card.verify{--edge:var(--verify)}.card.suppress{--edge:var(--suppress)}
+  .card .top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .said{font-style:italic;font-size:14px;flex:1;line-height:1.35}.said::before{content:"“"}.said::after{content:"”"}
+  .chip{font-family:var(--disp);font-weight:600;font-size:11px;padding:5px 10px;border-radius:999px;color:#fff;white-space:nowrap}
+  .chip.ask{background:var(--ask)}.chip.verify{background:var(--verify)}.chip.suppress{background:var(--suppress)}
+  .evi{font-family:var(--mono);font-size:11.5px;line-height:1.5;color:var(--muted);background:var(--cream);border:1px solid var(--hair2);border-radius:8px;padding:9px 11px;margin-bottom:9px}
+  .evi b{color:var(--ink)}
+  .cant{font-family:var(--mono);font-size:11px;line-height:1.45;color:var(--edge);display:flex;gap:6px;margin-bottom:9px}
+  .card.ask .cant{color:var(--ask)}.card.verify .cant{color:var(--verify)}
+  .owner{font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-bottom:9px}.owner b{color:var(--ink)}
+  .q{font-size:13px;line-height:1.45;border-left:2px solid var(--edge);padding-left:10px;color:var(--ink)}
+  .q .k{display:block;font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);margin-bottom:3px}
+  .q .gloss{color:var(--faint)}
+  .acts{display:flex;gap:7px;margin-top:12px}
+  .acts button{font-size:12px;font-weight:500;border-radius:8px;padding:6px 12px;cursor:pointer;border:1px solid var(--hair);background:var(--white);color:var(--muted);font-family:var(--sans)}
+  .acts button.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .card.suppress{opacity:.7}.card.suppress .said{text-decoration:line-through;text-decoration-color:var(--faint);color:var(--muted)}
+  .resolved{font-size:12.5px;color:var(--suppress);display:flex;gap:7px;margin-top:2px}.resolved b{font-weight:600}
+
+  /* ambient note view */
+  .note p{font-size:14px;line-height:1.6;margin-bottom:10px}
+  .note .hl{background:#FCF3C8;padding:1px 3px;border-radius:3px}
+  .note .cap{margin-top:12px;padding-top:12px;border-top:1px solid var(--hair2);font-size:12.5px;color:var(--muted)}
+  .note .cap b{color:var(--ink)}
+
+  .foot{margin-top:16px;font-size:11.5px;color:var(--faint);line-height:1.6;grid-column:1/-1}
+  .foot b{color:var(--muted)}
+
+  @media(max-width:820px){.grid{grid-template-columns:1fr 1fr}.split{grid-template-columns:1fr}}
+  @media(max-width:480px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="logo"><span class="chk">✓</span>Sure for Sure<span class="dot">.</span></div>
+    <span class="badge-pill">demo</span>
+  </div>
+
+  <!-- ============ SCREEN 1 ============ -->
+  <div id="screen-picker">
+    <div class="picker-head">
+      <h1>Select Demo Encounter</h1>
+      <p>Pick an encounter to start. Each one loads a visit transcript and clinical data; the label shows which parts are real speech vs synthetic record.</p>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <!-- ============ SCREEN 2 ============ -->
+  <div id="screen-detail" class="hidden">
+    <div class="dhead">
+      <button class="back" id="back">← Encounters</button>
+      <div class="pt"><span class="nm" id="d-name"></span><span class="mr" id="d-mrn"></span></div>
+      <div class="prov-inline" id="d-prov"></div>
+    </div>
+    <div class="toggle">
+      <button id="tab-note" class="on">Note as written</button>
+      <button id="tab-onus">Checked</button>
+    </div>
+    <div class="split">
+      <!-- LEFT: transcript -->
+      <div class="panel">
+        <h3><span class="rec-dot"></span> Visit transcript</h3>
+        <div id="transcript"></div>
+      </div>
+      <!-- RIGHT: note OR options -->
+      <div class="panel opts" id="right-panel"></div>
+      <div class="foot" id="d-foot"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const IMG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="1.6"/><path d="M21 15l-5-5L5 21"/></svg>';
+
+const SCENARIOS = {
+  howell: {
+    name:"Mr. Howell — geriatric cardiometabolic", short:"Howell",
+    meta:"85M \u00b7 Internal Medicine", mrn:"competition #10 \u00b7 interpreter: none",
+    dtype:"source_conflict", dcolor:"var(--verify)",
+    prov:[["real","transcript + FHIR: competition data"]],
+    desc:"Chart lists two statins and two metoprolol doses; patient knows which he takes \u2014 the record doesn't.",
+    spec:"Internal Medicine",
+    transcript:[
+      ["d","D","Good morning, Mr. Howell. Come on in — it is good to see you again. How was the ride over?"],
+      ["p","P","Oh, my grandson brought me. He drives like the road owes him money, but we made it in one piece."],
+      ["d","D","Ha — glad to hear it. So it has been about a year since your last full checkup. How have you been feeling overall?"],
+      ["p","P","Honestly, doctor, not bad for an old-timer. I turned eighty-five in March. I get a little slower every year, but I still do my walk around the block most mornings."],
+      ["d","D","That is wonderful. Any chest pain, pressure, or tightness on those walks? Anything like what you felt before your heart attack?"],
+      ["p","P","No, nothing like that. Once in a while I get a twinge if I overdo it in the yard, but it passes as soon as I sit down. I have not had to use that little spray in a long while."],
+      ["d","D","The nitroglycerin spray. Good — keep carrying it, but I am glad you have not needed it. Any shortness of breath, swelling in your ankles, waking up at night gasping for air?"],
+      ["p","P","No, none of that. No swelling. I sleep like a rock, always have."],
+      ["d","D","Dizziness, lightheadedness, any falls this past year?"],
+      ["p","P","No falls. I hold the rail on the stairs like my daughter makes me promise to."],
+      ["d","D","Smart promise. Appetite holding up? Weight steady?"],
+      ["p","P","Appetite is fine. I eat what the garden gives me, mostly. Tomatoes did well this year."],
+      ["d","D","Now, big news in your file — I hear you finally stopped working this year?"],
+      ["p","P","I did. Sixty years of keeping books for people, and I closed the ledger for good in June. Feels strange. Some mornings I still reach for my briefcase."],
+      ["d","D","That is a big change. How are you filling the days?"],
+      ["p","P","The garden, mostly. And my daughter and grandson live with me, so there is always some commotion in the house."],
+      ["d","D","Three of you at home, that is right. Any trouble affording food, your medications, getting to appointments — anything like that?"],
+      ["p","P","No, we are comfortable. I saved carefully. That was my whole profession, after all."],
+      ["d","D","Fair enough. Let us go through your medications one by one — it has been a while since we did a proper reconciliation, and I see some duplicates in the chart I want to sort out.",true],
+      ["p","P","I brought the shoebox with all the bottles, like your nurse asked."],
+      ["d","D","Perfect. So the chart lists simvastatin twenty milligrams and also atorvastatin twenty — you should not be on two cholesterol pills. Which one is actually in the box?",true],
+      ["p","P","The atorvastatin. The other bottle is empty — that one was from the hospital, years back.",true],
+      ["d","D","That is what I suspected. Simvastatin comes off the list today. Same question for the metoprolol — I see a hundred-milligram extended release and an old fifty-milligram one.",true],
+      ["p","P","I take the hundred in the morning. The fifty was the old dose from before.",true],
+      ["d","D","We will clean that up too. And the baby aspirin, the eighty-one, and the losartan fifty — still every day?",true],
+      ["p","P","Every day with my oatmeal. Never miss."],
+      ["d","D","Excellent. Now your numbers. Blood pressure today is one-oh-seven over fifty-eight, which is quite good, and your heart rate is ninety-six. Weight is seventy-eight and a half kilos, and the body mass index works out to twenty-seven point eight — trimmer than a few years ago.",true],
+      ["p","P","The gardening keeps me honest."],
+      ["d","D","It shows. Your labs are mostly reassuring. The A1c — that is the three-month sugar average — came back at five point four five percent, which is excellent for someone with type two diabetes."],
+      ["p","P","That is the best it has been, is it not?"],
+      ["d","D","It is. Your fasting sugar this morning was actually on the low side, around sixty-six, so I do not want you skipping breakfast before those walks. Kidneys look strong — creatinine is zero point six. Your potassium ran a touch high at five point one six. And the cholesterol panel — total is about two twenty-six with the LDL at one forty-eight, which is higher than I want for a man with your heart history."],
+      ["p","P","Even on the pill?"],
+      ["d","D","Even on it — and now that we have sorted out the two-statin confusion, I suspect inconsistent bottles are part of the story. Let us keep the atorvastatin every evening, no missed days, and recheck before we change any dose.",true],
+      ["p","P","I can do that."],
+      ["d","D","Two new medicines today. First, for the diabetes — your control is excellent, but with the diagnosis on the books and the metabolic syndrome alongside your heart disease, I would like to add a gentle dose of metformin, the extended-release kind, five hundred milligrams once daily with dinner."],
+      ["p","P","My brother took metformin. Upset his stomach something awful."],
+      ["d","D","That is the most common complaint, which is exactly why we use the extended-release and pair it with food. If it bothers you, call me — do not just quit it quietly."],
+      ["p","P","All right, fair."],
+      ["d","D","Second, the blood pressure. Your office reading today is good, but the home readings you described to the nurse have been bouncier, and your potassium is riding high. I want to add hydrochlorothiazide, twenty-five milligrams each morning — a mild water pill. It smooths the pressure out, and it tends to nudge that potassium down a notch alongside the losartan."],
+      ["p","P","A water pill. Will I be running to the bathroom all night?"],
+      ["d","D","Take it in the morning and you will mostly be running before lunch. If you feel dizzy or washed out, especially when you stand up, I want to hear about it right away."],
+      ["p","P","Understood."],
+      ["d","D","The nurse ran through the screening questions with you — the mood ones twice over, the safety-at-home questions, the alcohol and drug ones. Every score came back a zero, and your fall-risk score was twenty-two, which sits in the low-risk range."],
+      ["p","P","I told her the strongest thing I take is black coffee."],
+      ["d","D","Ha — I believe it. Your anemia has been quiet too — no new blood count today, but nothing in how you feel suggests trouble, so we will keep watching it at the next round of labs."],
+      ["p","P","It has never bothered me that I could tell."],
+      ["d","D","One thing I do want handled: open wide for me... yes, there it is. Your gums are red and puffy along the lower teeth, and you mentioned they bleed when you brush."],
+      ["p","P","Just a little pink in the sink, most mornings."],
+      ["d","D","That is gingivitis. Very treatable, but I do not want it smoldering — gum disease and heart disease are unfriendly neighbors. I am sending a referral to the dental clinic for a proper cleaning and exam."],
+      ["p","P","My dentist retired before I did, so I have been putting it off."],
+      ["d","D","Then the timing is right. Last thing — flu shot. It is October, the season is coming. Any bad reactions before?"],
+      ["p","P","Never. Just a sore arm and my daughter's sympathy."],
+      ["d","D","Then we will do it before you leave."],
+      ["d","N","Quick pinch coming, Mr. Howell... and done. Keep the sleeve loose — the arm might be sore tomorrow."],
+      ["p","P","Painless. You have a gentler touch than my grandson's driving."],
+      ["d","D","So, the recap. Keep taking the atorvastatin at night, the metoprolol hundred in the morning, the losartan, the little aspirin, and keep the nitro spray in your pocket. We are adding metformin extended-release at dinner and the water pill with breakfast. Simvastatin and the old fifty-milligram metoprolol are off the list. Dental clinic for the gums, flu shot done, and no skipped breakfasts.",true],
+      ["p","P","Metformin at supper, water pill with the coffee. I will write it on the calendar the minute I am home."],
+      ["d","D","Perfect. I will see you back in about six months for repeat labs — sooner if there is any chest pain, dizziness, or if the new pill argues with your stomach."],
+      ["p","P","Thank you, doctor. I will bring you a tomato next summer if the garden cooperates."],
+      ["d","D","I will hold you to that, Mr. Howell. Take care now."]
+    ],
+    note:`<p><b>Cardiometabolic follow-up.</b> Medications reconciled this visit. Patient on <span class="hl">atorvastatin</span> and <span class="hl">metoprolol 100mg</span>. Continue.</p>
+    <p class="cap"><b>\u26a0 What this depended on:</b> the active list had carried a duplicate <b>simvastatin</b> and an old <b>metoprolol 50mg</b>. The clinician caught them this visit by doing a full manual reconciliation. That worked \u2014 but it depended on the clinician having time to go through the list drug by drug. Sure for Sure flags the same conflict automatically, so it doesn't rely on a full reconciliation happening on a busy day.</p>`,
+    stats:[["v","2","To reconcile"]],
+    cards:[
+      {cls:"verify",said:"The atorvastatin. The other bottle is empty — that one was from the hospital, years back.",chip:"Verify record",
+       evi:"<b>Active list (FHIR):</b> Simvastatin 20 MG and atorvastatin 20 MG — two statins on the same list",
+       cant:"does not conclude which is current — the record itself can't say, so the system doesn't guess",
+       owner:"owner: <b>record</b> \u00b7 divergence: <b>duplicate_record</b> \u00b7 the record carries conflicting entries for the same medication thread",
+       q:["Record task","The active record carries conflicting entries for the same medication thread or class — Simvastatin 20 MG Oral Tablet and atorvastatin 20 MG Oral Tablet. Confirm which reflects the current regimen and remove the other before signing."]},
+      {cls:"verify",said:"I take the hundred in the morning. The fifty was the old dose from before.",chip:"Verify record",
+       evi:"<b>Active list (FHIR):</b> metoprolol succinate 100 MG ER and 50 MG ER — two doses of the same drug",
+       cant:"does not conclude which is current — routed for the clinician to confirm",
+       owner:"owner: <b>record</b> \u00b7 divergence: <b>duplicate_record</b> \u00b7 conflicting entries for the same medication thread",
+       q:["Record task","The active record carries conflicting entries for the same medication thread or class — 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet and 24 HR metoprolol succinate 50 MG Extended Release Oral Tablet. Confirm which reflects the current regimen and remove the other before signing."]}
+    ]
+  },
+
+  john: {
+    name:"John \u2014 Asthma, self-reduced controller", short:"John",
+    meta:"58M \u00b7 Pulmonology", mrn:"RES0216 \u00b7 interpreter: none",
+    dtype:"unverified_confidence", dcolor:"var(--ask)",
+    prov:[["real","speech: real (RES0216, BSD-3)"],["synth","record: synthetic FHIR"]],
+    desc:"Chest tightness on walks; quietly dropped the controller to mornings only.",
+    spec:"Pulmonology",
+    transcript:[
+      ["d","D-17","So you have asthma \u2014 do you use any puffers at the moment?"],
+      ["p","P-17","Yeah, I just use the one I take every day. I don't really use the as-needed one\u2026 I haven't had to in a really long time, so I didn't refill my last one.",true],
+      ["d","D-19","And you haven't stopped taking the daily one in the last three days?"],
+      ["p","P-19","No, I always take it \u2014 I'm supposed to take it morning and night, but for a while I was skipping the night one because I didn't feel I needed it. Lately I've been taking it every day, but just in the morning.",true],
+      ["d","D-20","What makes you say you haven't needed the night one?"],
+      ["p","P-20","I haven't needed the rescue one in years, and even taking it just in the morning I haven't had problems.",false]
+    ],
+    note:`<p><b>Asthma, controller regimen.</b> Patient reports taking the <span class="hl">controller inhaler daily</span>; no rescue use in years. Tolerating well. Continue as prescribed.</p>
+    <p class="cap"><b>\u26a0 What the note flattens:</b> the patient was prescribed <b>morning and night</b> but self-reduced to <b>mornings only</b> \u2014 hedged, not confidently. Over the same window he now has new chest tightness. The note reads "daily," losing the reduction.</p>`,
+    stats:[["a","1","To ask"],["s","1","Suppressed"]],
+    cards:[
+      {cls:"ask",said:"I take it every day\u2026 but just in the morning.",chip:"Ask patient",
+       evi:"<b>Prescribed:</b> morning + night (BID) \u00b7 <b>patient reports:</b> mornings only, then stopped across visits",
+       cant:"reduced then stopped while symptoms rose, asserted confidently \u2192 <b>unverified_confidence</b>",
+       owner:"owner: <b>patient</b> \u00b7 missing fact: what led from reducing to stopping, and whether it ties to new symptoms",
+       q:["Suggested question","The controller was reduced across visits and then stopped, while nighttime symptoms and rescue use increased over the same period. What led from reducing it to stopping, and how has breathing changed?"]},
+      {cls:"suppress",said:"I didn't refill the rescue one \u2014 haven't needed it in years.",chip:"Suppressed",
+       resolved:"Consistent across the visit and clinically expected (no rescue need in years). Surfacing it would be noise, not safety \u2014 <b>not shown</b>."}
+    ]
+  }
+};
+
+// ---------- render scenario grid ----------
+const grid = document.getElementById('grid');
+function renderGrid(filter='all'){
+  grid.innerHTML='';
+  let i=0;
+  for(const key in SCENARIOS){
+    const s=SCENARIOS[key];
+    if(filter!=='all' && s.spec!==filter) continue;
+    i++;
+    const prov=s.prov[0]; // lead badge
+    const el=document.createElement('div');
+    el.className='scard';
+    el.innerHTML=`
+      <div class="thumb">
+        <span class="dtype" style="background:${s.dcolor}">${s.dtype}</span>
+        <span class="prov ${prov[0]}">${prov[0]==='real'?'real speech':'synthetic'}</span>
+        ${IMG}
+      </div>
+      <div class="body">
+        <div class="name">0${i} — ${s.short}</div>
+        <div class="meta">${s.meta}</div>
+        <div class="desc">${s.desc}</div>
+      </div>`;
+    el.addEventListener('click',()=>openDetail(key));
+    grid.appendChild(el);
+  }
+}
+renderGrid();
+
+// ---------- detail view ----------
+const scP=document.getElementById('screen-picker'), scD=document.getElementById('screen-detail');
+let current=null, mode='note';
+
+function openDetail(key){
+  current=key; mode='note';
+  const s=SCENARIOS[key];
+  document.getElementById('d-name').textContent=s.name;
+  document.getElementById('d-mrn').textContent=s.mrn;
+  document.getElementById('d-prov').innerHTML=s.prov.map(p=>`<span class="${p[0]==='real'?'r':'s'}">${p[1]}</span>`).join('');
+  // transcript
+  document.getElementById('transcript').innerHTML=s.transcript.map(t=>
+    `<div class="turn ${t[0]} ${t[3]?'claim':''}"><span class="spk">${t[1]}</span><span class="tx">${t[2]}</span></div>`).join('');
+  document.getElementById('d-foot').innerHTML=`<b>Sure for Sure never issues a verdict.</b> It suggests a question or a record task; judgment stays with the clinician. Certainty is estimated from language, not asserted as true belief. Refill and interpretation are secondary signals. This is a controlled demo over authored/real-speech scenarios — not clinical accuracy.`;
+  document.getElementById('tab-note').classList.add('on');
+  document.getElementById('tab-onus').classList.remove('on');
+  renderRight();
+  scP.classList.add('hidden'); scD.classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+function renderRight(){
+  const s=SCENARIOS[current];
+  const rp=document.getElementById('right-panel');
+  if(mode==='note'){
+    rp.className='panel note';
+    rp.innerHTML=`<h3>Ambient note · draft</h3>${s.note}`;
+  } else {
+    rp.className='panel opts';
+    let html=`<h3>Before you sign — ${s.cards.length} check${s.cards.length>1?'s':''}</h3>`;
+    html+=`<p class="subline">What routes each one isn't the claim — it's who owns the fact that's missing.</p>`;
+    html+=`<div class="stats">`+s.stats.map(st=>`<div class="stat ${st[0]}"><div class="n">${st[1]}</div><div class="l">${st[2]}</div></div>`).join('')+`</div>`;
+    html+=s.cards.map(c=>{
+      if(c.cls==='suppress'){
+        return `<div class="card suppress"><div class="top"><span class="said">${c.said}</span><span class="chip suppress">${c.chip}</span></div><div class="resolved"><span>✓</span><div>${c.resolved}</div></div></div>`;
+      }
+      return `<div class="card ${c.cls}">
+        <div class="top"><span class="said">${c.said}</span><span class="chip ${c.cls}">${c.chip}</span></div>
+        <div class="evi">${c.evi}</div>
+        <div class="cant"><span>✗</span><span>${c.cant}</span></div>
+        <div class="owner">${c.owner}</div>
+        <div class="q"><span class="k">${c.q[0]}</span>${c.q[1]}</div>
+        <div class="acts"><button class="pri">Add to note</button><button>Dismiss</button></div>
+      </div>`;
+    }).join('');
+    rp.innerHTML=html;
+  }
+}
+
+document.getElementById('tab-note').addEventListener('click',function(){mode='note';this.classList.add('on');document.getElementById('tab-onus').classList.remove('on');renderRight();});
+document.getElementById('tab-onus').addEventListener('click',function(){mode='onus';this.classList.add('on');document.getElementById('tab-note').classList.remove('on');renderRight();});
+document.getElementById('back').addEventListener('click',()=>{scD.classList.add('hidden');scP.classList.remove('hidden');window.scrollTo(0,0);});
+</script>
+</body>
+</html>
