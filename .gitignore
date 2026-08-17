@@ -1,0 +1,40 @@
+# Organizer / local source data — never commit
+synthetic-ambient-fhir-25/
+synthetic-ambient-fhir-25*.json
+synthetic-ambient-fhir-25*.jsonl
+private_inputs/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.venv/
+venv/
+
+# Local generated / evaluation outputs
+artifacts/
+runs/
+evaluation/runs/
+evaluation/human_review/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+.pnpm-store/
+frontend/*.tsbuildinfo
+frontend/vite.config.js
+frontend/vite.config.d.ts
+
+# OS
+.DS_Store
+
+# Local secrets
+.env
+.env.*
+!.env.example
+!frontend/.env.example
+evaluation/organizer_medication_annotations.json

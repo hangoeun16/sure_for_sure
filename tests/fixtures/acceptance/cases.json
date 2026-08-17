@@ -1,0 +1,68 @@
+{
+  "case_a": {
+    "patient_id": "synthetic-a",
+    "transcript": "PT: I take metoprolol 100 mg every morning.",
+    "medications": [{"id": "med-a", "text": "metoprolol 100 mg tablet", "status": "active", "frequency": "every morning"}],
+    "provider_output": {"claims": [{"medication_name": "metoprolol", "raw_mention": "metoprolol", "status": "active", "dose_value": 100, "dose_unit": "mg", "frequency": "every morning", "supporting_evidence": [{"turn_index": 0, "quote": "I take metoprolol 100 mg every morning."}]}]}
+  },
+  "case_b": {
+    "patient_id": "synthetic-b",
+    "transcript": "PT: I do not take metoprolol anymore.",
+    "medications": [{"id": "med-b", "text": "metoprolol 50 mg tablet", "status": "active"}],
+    "provider_output": {"claims": [{"medication_name": "metoprolol", "raw_mention": "metoprolol", "status": "stopped", "negated": true, "negation_cue": "do not take metoprolol anymore", "supporting_evidence": [{"turn_index": 0, "quote": "I do not take metoprolol anymore."}]}]}
+  },
+  "case_c": {
+    "patient_id": "synthetic-c",
+    "transcript": "DR: Are you still taking lisinopril once a day?\nPT: Yes, every day.",
+    "medications": [{"id": "med-c", "text": "lisinopril 10 mg tablet", "status": "active", "frequency": "daily"}],
+    "provider_output": {"claims": [{"medication_name": "lisinopril", "raw_mention": "lisinopril", "status": "active", "frequency": "daily", "supporting_evidence": [{"turn_index": 0, "quote": "Are you still taking lisinopril once a day?"}, {"turn_index": 1, "quote": "Yes, every day."}]}]}
+  },
+  "case_d": {
+    "patient_id": "synthetic-d",
+    "transcript": "DR: What dose of atenolol do you take?\nPT: I think the dose is 50 milligrams, but I am not sure.",
+    "medications": [{"id": "med-d", "text": "atenolol 25 mg tablet", "status": "active"}],
+    "provider_output": {"claims": [{"medication_name": "atenolol", "raw_mention": "atenolol", "status": "active", "dose_value": 50, "dose_unit": "mg", "uncertainty_cue": "I think the dose is 50 milligrams, but I am not sure", "supporting_evidence": [{"turn_index": 0, "quote": "What dose of atenolol do you take?"}, {"turn_index": 1, "quote": "I think the dose is 50 milligrams, but I am not sure."}]}]}
+  },
+  "case_e": {
+    "patient_id": "synthetic-e",
+    "transcript": "PT: I still take metformin, but I miss the evening dose a few times a week.",
+    "medications": [{"id": "med-e", "text": "metformin 500 mg tablet", "status": "active", "frequency": "twice daily"}],
+    "provider_output": {"claims": [{"medication_name": "metformin", "raw_mention": "metformin", "status": "active", "adherence": {"status": "gap", "description": "misses evening dose a few times a week", "quote": "I miss the evening dose a few times a week"}, "supporting_evidence": [{"turn_index": 0, "quote": "I still take metformin, but I miss the evening dose a few times a week."}]}]}
+  },
+  "case_f": {
+    "patient_id": "synthetic-f",
+    "transcript": "DR: Which carvedilol dose is current?\nPT: I think I use the 12.5 mg tablets, but I am uncertain.\nDR: Let us check the bottle you brought. The current label is 25 mg twice daily.\nPT: Yes, 25 mg twice daily is what I take now.",
+    "medications": [{"id": "med-f-old", "text": "carvedilol 12.5 mg tablet", "status": "active", "frequency": "twice daily"}, {"id": "med-f-current", "text": "carvedilol 25 mg tablet", "status": "active", "frequency": "twice daily"}],
+    "provider_output": {"claims": [{"medication_name": "carvedilol", "raw_mention": "carvedilol", "status": "active", "dose_value": 12.5, "dose_unit": "mg", "uncertainty_cue": "I think I use the 12.5 mg tablets, but I am uncertain", "supporting_evidence": [{"turn_index": 0, "quote": "Which carvedilol dose is current?"}, {"turn_index": 1, "quote": "I think I use the 12.5 mg tablets, but I am uncertain."}]}, {"medication_name": "carvedilol", "raw_mention": "carvedilol", "status": "active", "dose_value": 25, "dose_unit": "mg", "frequency": "twice daily", "supporting_evidence": [{"turn_index": 2, "quote": "The current label is 25 mg twice daily."}, {"turn_index": 3, "quote": "Yes, 25 mg twice daily is what I take now."}]}]}
+  },
+  "case_g": {
+    "patient_id": "synthetic-g",
+    "transcript": "PT: I take rivaroxaban 20 mg with dinner.",
+    "medications": [{"id": "med-g-unseen", "text": "rivaroxaban 20 mg oral tablet", "status": "active", "frequency": "with dinner"}],
+    "provider_output": {"claims": [{"medication_name": "rivaroxaban", "raw_mention": "rivaroxaban", "status": "active", "dose_value": 20, "dose_unit": "mg", "frequency": "with dinner", "supporting_evidence": [{"turn_index": 0, "quote": "I take rivaroxaban 20 mg with dinner."}]}]}
+  },
+  "case_h": {
+    "patient_id": "synthetic-h",
+    "transcript": "PT: My knee aches after long walks.\nDR: We can schedule physical therapy next Thursday.",
+    "medications": [],
+    "provider_output": {"claims": []}
+  },
+  "case_i": {
+    "patient_id": "synthetic-i",
+    "transcript": "PT: I take losartan every day, but I stopped amlodipine last month.",
+    "medications": [{"id": "med-i-1", "text": "losartan 50 mg tablet", "status": "active", "frequency": "daily"}, {"id": "med-i-2", "text": "amlodipine 5 mg tablet", "status": "active", "frequency": "daily"}],
+    "provider_output": {"claims": [{"medication_name": "losartan", "raw_mention": "losartan", "status": "active", "frequency": "daily", "supporting_evidence": [{"turn_index": 0, "quote": "I take losartan every day"}]}, {"medication_name": "amlodipine", "raw_mention": "amlodipine", "status": "stopped", "negated": true, "negation_cue": "stopped amlodipine last month", "supporting_evidence": [{"turn_index": 0, "quote": "I stopped amlodipine last month"}]}]}
+  },
+  "case_j_unresolved": {
+    "patient_id": "synthetic-j1",
+    "transcript": "DR: The chart says propranolol 40 mg. What are you taking?\nPT: My bottle says propranolol 80 mg, and I do not know which is right.",
+    "medications": [{"id": "med-j1", "text": "propranolol 40 mg tablet", "status": "active", "frequency": "daily"}],
+    "provider_output": {"claims": [{"medication_name": "propranolol", "raw_mention": "propranolol", "status": "active", "dose_value": 80, "dose_unit": "mg", "uncertainty_cue": "I do not know which is right", "supporting_evidence": [{"turn_index": 0, "quote": "The chart says propranolol 40 mg."}, {"turn_index": 1, "quote": "My bottle says propranolol 80 mg, and I do not know which is right."}]}]}
+  },
+  "case_j_resolved": {
+    "patient_id": "synthetic-j2",
+    "transcript": "DR: The chart says propranolol 40 mg. What are you taking?\nPT: My bottle says propranolol 80 mg, and I do not know which is right.\nDR: The pharmacy confirms the active prescription is 80 mg daily.\nPT: Understood. I will continue the 80 mg dose.",
+    "medications": [{"id": "med-j2-old", "text": "propranolol 40 mg tablet", "status": "active", "frequency": "daily"}, {"id": "med-j2-current", "text": "propranolol 80 mg tablet", "status": "active", "frequency": "daily"}],
+    "provider_output": {"claims": [{"medication_name": "propranolol", "raw_mention": "propranolol", "status": "active", "dose_value": 80, "dose_unit": "mg", "uncertainty_cue": "I do not know which is right", "supporting_evidence": [{"turn_index": 0, "quote": "The chart says propranolol 40 mg."}, {"turn_index": 1, "quote": "My bottle says propranolol 80 mg, and I do not know which is right."}]}, {"medication_name": "propranolol", "raw_mention": "propranolol", "status": "active", "dose_value": 80, "dose_unit": "mg", "frequency": "daily", "supporting_evidence": [{"turn_index": 2, "quote": "The pharmacy confirms the active prescription is 80 mg daily."}, {"turn_index": 3, "quote": "I will continue the 80 mg dose."}]}]}
+  }
+}

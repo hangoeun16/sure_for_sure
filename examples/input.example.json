@@ -1,0 +1,101 @@
+{
+  "id": "example-patient::example-encounter",
+  "metadata": {
+    "patient_id": "example-patient",
+    "encounter_id": "example-encounter",
+    "visit_title": "Medication reconciliation follow-up",
+    "date": "2030-04-12",
+    "claim_extraction": {
+      "claims": [
+        {
+          "medication_name": "carvedilol",
+          "status": "active",
+          "dose_value": 12.5,
+          "dose_unit": "mg",
+          "frequency": "every morning",
+          "route": "oral",
+          "confidence_cues": [
+            {"type": "hedge", "turn_index": 1, "quote": "I think"}
+          ],
+          "supporting_quotes": [
+            {"turn_index": 1, "quote": "I think I take the 12.5 milligram tablet every morning."}
+          ],
+          "adherence_gap": false,
+          "adherence_quote": null
+        },
+        {
+          "medication_name": "carvedilol",
+          "status": "active",
+          "dose_value": 25,
+          "dose_unit": "mg",
+          "frequency": "every morning",
+          "route": "oral",
+          "confidence_cues": [
+            {"type": "booster", "turn_index": 3, "quote": "definitely"}
+          ],
+          "supporting_quotes": [
+            {"turn_index": 3, "quote": "I definitely take 25 milligrams every morning; the 12.5 was my old dose."}
+          ],
+          "adherence_gap": false,
+          "adherence_quote": null
+        },
+        {
+          "medication_name": "rosuvastatin",
+          "status": "active",
+          "dose_value": 10,
+          "dose_unit": "mg",
+          "frequency": "daily",
+          "route": "oral",
+          "confidence_cues": [],
+          "supporting_quotes": [
+            {"turn_index": 5, "quote": "I take rosuvastatin 10 milligrams daily."}
+          ],
+          "adherence_gap": false,
+          "adherence_quote": null
+        }
+      ]
+    }
+  },
+  "patient_context": {
+    "patient": {"id": "example-patient"},
+    "longitudinal_summary": {"medication_labels": []}
+  },
+  "encounter_fhir": {
+    "encounter": {"resourceType": "Encounter", "id": "example-encounter"},
+    "related_resources": {
+      "MedicationRequest": [
+        {
+          "resourceType": "MedicationRequest",
+          "id": "example-rx-old",
+          "status": "active",
+          "authoredOn": "2030-01-03",
+          "subject": {"reference": "Patient/example-patient"},
+          "medicationCodeableConcept": {"text": "carvedilol 12.5 mg oral tablet"},
+          "dosageInstruction": [{"text": "Take every morning", "route": {"text": "oral route"}}]
+        },
+        {
+          "resourceType": "MedicationRequest",
+          "id": "example-rx-current",
+          "status": "active",
+          "authoredOn": "2030-03-18",
+          "subject": {"reference": "Patient/example-patient"},
+          "medicationCodeableConcept": {"text": "carvedilol 25 mg oral tablet"},
+          "dosageInstruction": [{"text": "Take every morning", "route": {"text": "oral route"}}]
+        },
+        {
+          "resourceType": "MedicationRequest",
+          "id": "example-rx-supported",
+          "status": "active",
+          "authoredOn": "2030-02-20",
+          "subject": {"reference": "Patient/example-patient"},
+          "medicationCodeableConcept": {"text": "rosuvastatin 10 mg oral tablet"},
+          "dosageInstruction": [{"text": "Take once daily", "route": {"text": "oral route"}}]
+        }
+      ]
+    }
+  },
+  "transcript": "DR: Which carvedilol dose are you taking now?\nPT: I think I take the 12.5 milligram tablet every morning.\nDR: Could you check the bottle you brought?\nPT: I definitely take 25 milligrams every morning; the 12.5 was my old dose.\nDR: And your cholesterol medicine?\nPT: I take rosuvastatin 10 milligrams daily.",
+  "note": "Medication reconciliation discussed during follow-up.",
+  "after_visit_summary": "Continue the reconciled medication plan and contact the clinic with questions.",
+  "after_visit_summary_provenance": {"source": "independently authored public example"}
+}

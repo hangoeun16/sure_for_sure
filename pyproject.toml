@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sure-for-sure"
+version = "0.1.0"
+description = "Inspectable medication claim verification with CED-based clinician routing."
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=0.102",
+    "fastapi>=0.115",
+    "pydantic>=2.10,<3",
+    "uvicorn>=0.34",
+]
+
+[project.optional-dependencies]
+dev = ["httpx>=0.28", "mypy>=1.15", "pytest>=8", "pytest-cov>=6", "ruff>=0.9"]
+
+[project.scripts]
+sure-for-sure = "backend.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["backend*", "pipeline*"]
+exclude = ["frontend*", "tests*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["backend", "pipeline", "tools", "tests"]
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["backend", "pipeline", "tools"]
+strict = true
+
+[[tool.mypy.overrides]]
+module = ["anthropic", "anthropic.*", "IPython", "IPython.*", "rich", "rich.*"]
+follow_imports = "skip"
+
+[tool.coverage.run]
+source = ["backend", "pipeline"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true

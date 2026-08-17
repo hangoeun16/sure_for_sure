@@ -1,0 +1,55 @@
+{
+  "dataset": {
+    "records_inspected": 25,
+    "records_with_evaluable_claims": 18,
+    "annotated_claims": 43,
+    "annotation_provenance": {
+      "description": "Author-annotated evaluation set over the 25 organizer-provided synthetic encounters",
+      "annotated_on": "2026-08-06",
+      "independently_validated": false,
+      "guidelines": "evaluation/ANNOTATION_GUIDELINES.md"
+    }
+  },
+  "provider_mode": "fixture",
+  "extraction": {
+    "status": "not_measured",
+    "reason": "Author annotations were injected through the deterministic stub; this is not transcript extraction evaluation.",
+    "annotated_claims": 43
+  },
+  "field_extraction": {
+    "status": "not_measured",
+    "reason": "Fixture-provided fields are inputs to the reasoning evaluation.",
+    "asserted_fields": 152
+  },
+  "reasoning_conditioned_on_author_claims": {
+    "medication_normalization": {
+      "correct": 43,
+      "total": 43,
+      "value": 1.0
+    },
+    "evidence_linking": {
+      "true_positive": 38,
+      "false_positive": 0,
+      "false_negative": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "divergence_classification": {
+      "correct": 43,
+      "total": 43,
+      "value": 1.0
+    },
+    "expected_relation_distribution": {
+      "silent": 36,
+      "source_conflict": 3,
+      "support": 4
+    },
+    "predicted_relation_distribution": {
+      "silent": 36,
+      "source_conflict": 3,
+      "support": 4
+    }
+  },
+  "errors": []
+}

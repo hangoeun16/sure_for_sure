@@ -1,0 +1,1191 @@
+{
+  "encounter_id": "example-patient::example-encounter",
+  "source": {
+    "source_dataset": "input.example",
+    "source_file": "input.example.json",
+    "source_record_id": "example-patient::example-encounter",
+    "source_record_index": 0,
+    "source_sha256": "2910f0ecebb9176ac59aec8b5ae8d8fb3d5231cee631450727a16248ea0edfd9",
+    "record_sha256": "fb7fde505ae412df303a78fdbe256dc73e279f143c1823d3b4d173b5e68487f0"
+  },
+  "summary": {
+    "claims": 3,
+    "patient_clarifications": 0,
+    "chart_cleanup": 1,
+    "clinician_review": 0,
+    "no_action": 2
+  },
+  "turns": [
+    {
+      "index": 0,
+      "speaker": "DR",
+      "speaker_label": "DR",
+      "text": "Which carvedilol dose are you taking now?",
+      "start_char": 4,
+      "end_char": 45
+    },
+    {
+      "index": 1,
+      "speaker": "PT",
+      "speaker_label": "PT",
+      "text": "I think I take the 12.5 milligram tablet every morning.",
+      "start_char": 50,
+      "end_char": 105
+    },
+    {
+      "index": 2,
+      "speaker": "DR",
+      "speaker_label": "DR",
+      "text": "Could you check the bottle you brought?",
+      "start_char": 110,
+      "end_char": 149
+    },
+    {
+      "index": 3,
+      "speaker": "PT",
+      "speaker_label": "PT",
+      "text": "I definitely take 25 milligrams every morning; the 12.5 was my old dose.",
+      "start_char": 154,
+      "end_char": 226
+    },
+    {
+      "index": 4,
+      "speaker": "DR",
+      "speaker_label": "DR",
+      "text": "And your cholesterol medicine?",
+      "start_char": 231,
+      "end_char": 261
+    },
+    {
+      "index": 5,
+      "speaker": "PT",
+      "speaker_label": "PT",
+      "text": "I take rosuvastatin 10 milligrams daily.",
+      "start_char": 266,
+      "end_char": 306
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim-bd94f01037e99f6f",
+      "medication_name": "carvedilol",
+      "status": "active",
+      "dose_value": 12.5,
+      "dose_unit": "mg",
+      "frequency": "every morning",
+      "route": "oral",
+      "negated": false,
+      "negation_span": null,
+      "adherence_gap": false,
+      "adherence_span": null,
+      "supporting_spans": [
+        {
+          "turn_index": 1,
+          "start_char": 50,
+          "end_char": 105,
+          "text": "I think I take the 12.5 milligram tablet every morning."
+        }
+      ],
+      "confidence": {
+        "level": "hedged",
+        "score": 0.33,
+        "cues": [
+          {
+            "type": "hedge",
+            "span": {
+              "turn_index": 1,
+              "start_char": 50,
+              "end_char": 57,
+              "text": "I think"
+            }
+          }
+        ],
+        "validation_warnings": [],
+        "rationale": "An explicit patient hedge lowers linguistic commitment."
+      },
+      "first_turn": 1,
+      "last_turn": 1,
+      "extractor": {
+        "provider": "stub",
+        "model": "fixture-schema-v2",
+        "request_id": "stub-1",
+        "schema_version": "claim-extraction-v2",
+        "attempts": 1,
+        "usage": {}
+      }
+    },
+    {
+      "claim_id": "claim-94bc736f7809f935",
+      "medication_name": "carvedilol",
+      "status": "active",
+      "dose_value": 25.0,
+      "dose_unit": "mg",
+      "frequency": "every morning",
+      "route": "oral",
+      "negated": false,
+      "negation_span": null,
+      "adherence_gap": false,
+      "adherence_span": null,
+      "supporting_spans": [
+        {
+          "turn_index": 3,
+          "start_char": 154,
+          "end_char": 226,
+          "text": "I definitely take 25 milligrams every morning; the 12.5 was my old dose."
+        }
+      ],
+      "confidence": {
+        "level": "emphatic",
+        "score": 1.0,
+        "cues": [
+          {
+            "type": "booster",
+            "span": {
+              "turn_index": 3,
+              "start_char": 156,
+              "end_char": 166,
+              "text": "definitely"
+            }
+          }
+        ],
+        "validation_warnings": [],
+        "rationale": "An explicit patient booster strengthens linguistic commitment."
+      },
+      "first_turn": 3,
+      "last_turn": 3,
+      "extractor": {
+        "provider": "stub",
+        "model": "fixture-schema-v2",
+        "request_id": "stub-1",
+        "schema_version": "claim-extraction-v2",
+        "attempts": 1,
+        "usage": {}
+      }
+    },
+    {
+      "claim_id": "claim-8c2ca82d3a1317a7",
+      "medication_name": "rosuvastatin",
+      "status": "active",
+      "dose_value": 10.0,
+      "dose_unit": "mg",
+      "frequency": "daily",
+      "route": "oral",
+      "negated": false,
+      "negation_span": null,
+      "adherence_gap": false,
+      "adherence_span": null,
+      "supporting_spans": [
+        {
+          "turn_index": 5,
+          "start_char": 266,
+          "end_char": 306,
+          "text": "I take rosuvastatin 10 milligrams daily."
+        }
+      ],
+      "confidence": {
+        "level": "neutral",
+        "score": 0.67,
+        "cues": [],
+        "validation_warnings": [],
+        "rationale": "No explicit hedge or booster; this is an ordinary neutral assertion."
+      },
+      "first_turn": 5,
+      "last_turn": 5,
+      "extractor": {
+        "provider": "stub",
+        "model": "fixture-schema-v2",
+        "request_id": "stub-1",
+        "schema_version": "claim-extraction-v2",
+        "attempts": 1,
+        "usage": {}
+      }
+    }
+  ],
+  "record_evidence": [
+    {
+      "evidence_id": "example-rx-old",
+      "medication_name": "carvedilol",
+      "status": "active",
+      "dose_value": 12.5,
+      "dose_unit": "mg",
+      "dose_values": [
+        12.5
+      ],
+      "dose_units": [
+        "mg"
+      ],
+      "frequency": "every morning",
+      "route": "oral",
+      "resource_type": "MedicationRequest",
+      "resource_id": "example-rx-old",
+      "source_path": "encounter_fhir.related_resources.MedicationRequest[0]",
+      "effective_time": "2030-01-03",
+      "patient_reference": "Patient/example-patient",
+      "raw_text": "carvedilol 12.5 mg oral tablet"
+    },
+    {
+      "evidence_id": "example-rx-current",
+      "medication_name": "carvedilol",
+      "status": "active",
+      "dose_value": 25.0,
+      "dose_unit": "mg",
+      "dose_values": [
+        25.0
+      ],
+      "dose_units": [
+        "mg"
+      ],
+      "frequency": "every morning",
+      "route": "oral",
+      "resource_type": "MedicationRequest",
+      "resource_id": "example-rx-current",
+      "source_path": "encounter_fhir.related_resources.MedicationRequest[1]",
+      "effective_time": "2030-03-18",
+      "patient_reference": "Patient/example-patient",
+      "raw_text": "carvedilol 25 mg oral tablet"
+    },
+    {
+      "evidence_id": "example-rx-supported",
+      "medication_name": "rosuvastatin",
+      "status": "active",
+      "dose_value": 10.0,
+      "dose_unit": "mg",
+      "dose_values": [
+        10.0
+      ],
+      "dose_units": [
+        "mg"
+      ],
+      "frequency": "daily",
+      "route": "oral",
+      "resource_type": "MedicationRequest",
+      "resource_id": "example-rx-supported",
+      "source_path": "encounter_fhir.related_resources.MedicationRequest[2]",
+      "effective_time": "2030-02-20",
+      "patient_reference": "Patient/example-patient",
+      "raw_text": "rosuvastatin 10 mg oral tablet"
+    }
+  ],
+  "links": {
+    "claim-bd94f01037e99f6f": [
+      {
+        "claim_id": "claim-bd94f01037e99f6f",
+        "evidence_id": "example-rx-current",
+        "match_type": "normalized_exact",
+        "match_score": 1.0,
+        "rationale": "Medication identity matched by normalized exact normalization."
+      },
+      {
+        "claim_id": "claim-bd94f01037e99f6f",
+        "evidence_id": "example-rx-old",
+        "match_type": "normalized_exact",
+        "match_score": 1.0,
+        "rationale": "Medication identity matched by normalized exact normalization."
+      }
+    ],
+    "claim-94bc736f7809f935": [
+      {
+        "claim_id": "claim-94bc736f7809f935",
+        "evidence_id": "example-rx-current",
+        "match_type": "normalized_exact",
+        "match_score": 1.0,
+        "rationale": "Medication identity matched by normalized exact normalization."
+      },
+      {
+        "claim_id": "claim-94bc736f7809f935",
+        "evidence_id": "example-rx-old",
+        "match_type": "normalized_exact",
+        "match_score": 1.0,
+        "rationale": "Medication identity matched by normalized exact normalization."
+      }
+    ],
+    "claim-8c2ca82d3a1317a7": [
+      {
+        "claim_id": "claim-8c2ca82d3a1317a7",
+        "evidence_id": "example-rx-supported",
+        "match_type": "normalized_exact",
+        "match_score": 1.0,
+        "rationale": "Medication identity matched by normalized exact normalization."
+      }
+    ]
+  },
+  "divergences": {
+    "claim-bd94f01037e99f6f": {
+      "claim_id": "claim-bd94f01037e99f6f",
+      "relation": "source_conflict",
+      "divergence_score": 0.75,
+      "disputed_fields": [
+        "dose_value"
+      ],
+      "field_comparisons": [
+        {
+          "field": "medication_name",
+          "relation": "support",
+          "claim_value": "carvedilol",
+          "record_values": [
+            "carvedilol",
+            "carvedilol"
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "All available medication_name evidence matches the claim."
+        },
+        {
+          "field": "dose_value",
+          "relation": "source_conflict",
+          "claim_value": 12.5,
+          "record_values": [
+            25.0,
+            12.5
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "Record entries contain incompatible dose_value values."
+        },
+        {
+          "field": "dose_unit",
+          "relation": "support",
+          "claim_value": "mg",
+          "record_values": [
+            "mg",
+            "mg"
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "All available dose_unit evidence matches the claim."
+        },
+        {
+          "field": "frequency",
+          "relation": "support",
+          "claim_value": "every morning",
+          "record_values": [
+            "every morning",
+            "every morning"
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "All available frequency evidence matches the claim."
+        },
+        {
+          "field": "route",
+          "relation": "support",
+          "claim_value": "oral",
+          "record_values": [
+            "oral",
+            "oral"
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "All available route evidence matches the claim."
+        },
+        {
+          "field": "status",
+          "relation": "support",
+          "claim_value": "active",
+          "record_values": [
+            "active",
+            "active"
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "All available status evidence matches the claim."
+        }
+      ],
+      "supporting_evidence_ids": [
+        "example-rx-current",
+        "example-rx-old"
+      ],
+      "conflicting_evidence_ids": [
+        "example-rx-current",
+        "example-rx-old"
+      ],
+      "rationale": "Linked record entries conflict with one another and cannot be safely adjudicated."
+    },
+    "claim-94bc736f7809f935": {
+      "claim_id": "claim-94bc736f7809f935",
+      "relation": "source_conflict",
+      "divergence_score": 0.75,
+      "disputed_fields": [
+        "dose_value"
+      ],
+      "field_comparisons": [
+        {
+          "field": "medication_name",
+          "relation": "support",
+          "claim_value": "carvedilol",
+          "record_values": [
+            "carvedilol",
+            "carvedilol"
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "All available medication_name evidence matches the claim."
+        },
+        {
+          "field": "dose_value",
+          "relation": "source_conflict",
+          "claim_value": 25.0,
+          "record_values": [
+            25.0,
+            12.5
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "Record entries contain incompatible dose_value values."
+        },
+        {
+          "field": "dose_unit",
+          "relation": "support",
+          "claim_value": "mg",
+          "record_values": [
+            "mg",
+            "mg"
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "All available dose_unit evidence matches the claim."
+        },
+        {
+          "field": "frequency",
+          "relation": "support",
+          "claim_value": "every morning",
+          "record_values": [
+            "every morning",
+            "every morning"
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "All available frequency evidence matches the claim."
+        },
+        {
+          "field": "route",
+          "relation": "support",
+          "claim_value": "oral",
+          "record_values": [
+            "oral",
+            "oral"
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "All available route evidence matches the claim."
+        },
+        {
+          "field": "status",
+          "relation": "support",
+          "claim_value": "active",
+          "record_values": [
+            "active",
+            "active"
+          ],
+          "evidence_ids": [
+            "example-rx-current",
+            "example-rx-old"
+          ],
+          "rationale": "All available status evidence matches the claim."
+        }
+      ],
+      "supporting_evidence_ids": [
+        "example-rx-current",
+        "example-rx-old"
+      ],
+      "conflicting_evidence_ids": [
+        "example-rx-current",
+        "example-rx-old"
+      ],
+      "rationale": "Linked record entries conflict with one another and cannot be safely adjudicated."
+    },
+    "claim-8c2ca82d3a1317a7": {
+      "claim_id": "claim-8c2ca82d3a1317a7",
+      "relation": "support",
+      "divergence_score": 0.0,
+      "disputed_fields": [],
+      "field_comparisons": [
+        {
+          "field": "medication_name",
+          "relation": "support",
+          "claim_value": "rosuvastatin",
+          "record_values": [
+            "rosuvastatin"
+          ],
+          "evidence_ids": [
+            "example-rx-supported"
+          ],
+          "rationale": "All available medication_name evidence matches the claim."
+        },
+        {
+          "field": "dose_value",
+          "relation": "support",
+          "claim_value": 10.0,
+          "record_values": [
+            10.0
+          ],
+          "evidence_ids": [
+            "example-rx-supported"
+          ],
+          "rationale": "All available dose_value evidence matches the claim."
+        },
+        {
+          "field": "dose_unit",
+          "relation": "support",
+          "claim_value": "mg",
+          "record_values": [
+            "mg"
+          ],
+          "evidence_ids": [
+            "example-rx-supported"
+          ],
+          "rationale": "All available dose_unit evidence matches the claim."
+        },
+        {
+          "field": "frequency",
+          "relation": "support",
+          "claim_value": "daily",
+          "record_values": [
+            "daily"
+          ],
+          "evidence_ids": [
+            "example-rx-supported"
+          ],
+          "rationale": "All available frequency evidence matches the claim."
+        },
+        {
+          "field": "route",
+          "relation": "support",
+          "claim_value": "oral",
+          "record_values": [
+            "oral"
+          ],
+          "evidence_ids": [
+            "example-rx-supported"
+          ],
+          "rationale": "All available route evidence matches the claim."
+        },
+        {
+          "field": "status",
+          "relation": "support",
+          "claim_value": "active",
+          "record_values": [
+            "active"
+          ],
+          "evidence_ids": [
+            "example-rx-supported"
+          ],
+          "rationale": "All available status evidence matches the claim."
+        }
+      ],
+      "supporting_evidence_ids": [
+        "example-rx-supported"
+      ],
+      "conflicting_evidence_ids": [],
+      "rationale": "Linked record evidence accords with every assessable claimed attribute."
+    }
+  },
+  "ced_results": {
+    "claim-bd94f01037e99f6f": {
+      "claim_id": "claim-bd94f01037e99f6f",
+      "confidence_score": 0.33,
+      "divergence_score": 0.75,
+      "ced_score": 0.2475,
+      "scorable": true,
+      "abstention_reason": null,
+      "formula_version": "ced-v1"
+    },
+    "claim-94bc736f7809f935": {
+      "claim_id": "claim-94bc736f7809f935",
+      "confidence_score": 1.0,
+      "divergence_score": 0.75,
+      "ced_score": 0.75,
+      "scorable": true,
+      "abstention_reason": null,
+      "formula_version": "ced-v1"
+    },
+    "claim-8c2ca82d3a1317a7": {
+      "claim_id": "claim-8c2ca82d3a1317a7",
+      "confidence_score": 0.67,
+      "divergence_score": 0.0,
+      "ced_score": 0.0,
+      "scorable": true,
+      "abstention_reason": null,
+      "formula_version": "ced-v1"
+    }
+  },
+  "resolutions": {
+    "claim-bd94f01037e99f6f": {
+      "claim_id": "claim-bd94f01037e99f6f",
+      "resolved": true,
+      "resolution_type": "later_patient_confirmation",
+      "resolving_claim_id": "claim-94bc736f7809f935",
+      "resolution_span": {
+        "turn_index": 3,
+        "start_char": 154,
+        "end_char": 226,
+        "text": "I definitely take 25 milligrams every morning; the 12.5 was my old dose."
+      },
+      "resolved_value": "carvedilol active 25 mg every morning",
+      "disputed_fields": [
+        "dose_value"
+      ],
+      "resolved_fields": [
+        "dose_value"
+      ],
+      "unresolved_fields": [],
+      "chart_conflict_remaining": true,
+      "rationale": "Later patient claim claim-94bc736f7809f935 materially establishes all disputed fields: dose_value."
+    },
+    "claim-94bc736f7809f935": {
+      "claim_id": "claim-94bc736f7809f935",
+      "resolved": false,
+      "resolution_type": null,
+      "resolving_claim_id": null,
+      "resolution_span": null,
+      "resolved_value": null,
+      "disputed_fields": [
+        "dose_value"
+      ],
+      "resolved_fields": [],
+      "unresolved_fields": [
+        "dose_value"
+      ],
+      "chart_conflict_remaining": false,
+      "rationale": "No later patient-grounded claim addresses this discrepancy."
+    },
+    "claim-8c2ca82d3a1317a7": {
+      "claim_id": "claim-8c2ca82d3a1317a7",
+      "resolved": false,
+      "resolution_type": null,
+      "resolving_claim_id": null,
+      "resolution_span": null,
+      "resolved_value": null,
+      "disputed_fields": [],
+      "resolved_fields": [],
+      "unresolved_fields": [],
+      "chart_conflict_remaining": false,
+      "rationale": "The original claim has no disputed material fields."
+    }
+  },
+  "actions": [
+    {
+      "claim_id": "claim-bd94f01037e99f6f",
+      "route": "chart_cleanup",
+      "ced_score": 0.2475,
+      "rank": 1,
+      "recommended_action": "Reconcile stale or conflicting carvedilol entries in the record.",
+      "routing_rationale": "A later patient statement established every disputed field; the route reflects whether a chart conflict remains.",
+      "claim": {
+        "claim_id": "claim-bd94f01037e99f6f",
+        "medication_name": "carvedilol",
+        "status": "active",
+        "dose_value": 12.5,
+        "dose_unit": "mg",
+        "frequency": "every morning",
+        "route": "oral",
+        "negated": false,
+        "negation_span": null,
+        "adherence_gap": false,
+        "adherence_span": null,
+        "supporting_spans": [
+          {
+            "turn_index": 1,
+            "start_char": 50,
+            "end_char": 105,
+            "text": "I think I take the 12.5 milligram tablet every morning."
+          }
+        ],
+        "confidence": {
+          "level": "hedged",
+          "score": 0.33,
+          "cues": [
+            {
+              "type": "hedge",
+              "span": {
+                "turn_index": 1,
+                "start_char": 50,
+                "end_char": 57,
+                "text": "I think"
+              }
+            }
+          ],
+          "validation_warnings": [],
+          "rationale": "An explicit patient hedge lowers linguistic commitment."
+        },
+        "first_turn": 1,
+        "last_turn": 1,
+        "extractor": {
+          "provider": "stub",
+          "model": "fixture-schema-v2",
+          "request_id": "stub-1",
+          "schema_version": "claim-extraction-v2",
+          "attempts": 1,
+          "usage": {}
+        }
+      },
+      "divergence": {
+        "claim_id": "claim-bd94f01037e99f6f",
+        "relation": "source_conflict",
+        "divergence_score": 0.75,
+        "disputed_fields": [
+          "dose_value"
+        ],
+        "field_comparisons": [
+          {
+            "field": "medication_name",
+            "relation": "support",
+            "claim_value": "carvedilol",
+            "record_values": [
+              "carvedilol",
+              "carvedilol"
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "All available medication_name evidence matches the claim."
+          },
+          {
+            "field": "dose_value",
+            "relation": "source_conflict",
+            "claim_value": 12.5,
+            "record_values": [
+              25.0,
+              12.5
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "Record entries contain incompatible dose_value values."
+          },
+          {
+            "field": "dose_unit",
+            "relation": "support",
+            "claim_value": "mg",
+            "record_values": [
+              "mg",
+              "mg"
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "All available dose_unit evidence matches the claim."
+          },
+          {
+            "field": "frequency",
+            "relation": "support",
+            "claim_value": "every morning",
+            "record_values": [
+              "every morning",
+              "every morning"
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "All available frequency evidence matches the claim."
+          },
+          {
+            "field": "route",
+            "relation": "support",
+            "claim_value": "oral",
+            "record_values": [
+              "oral",
+              "oral"
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "All available route evidence matches the claim."
+          },
+          {
+            "field": "status",
+            "relation": "support",
+            "claim_value": "active",
+            "record_values": [
+              "active",
+              "active"
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "All available status evidence matches the claim."
+          }
+        ],
+        "supporting_evidence_ids": [
+          "example-rx-current",
+          "example-rx-old"
+        ],
+        "conflicting_evidence_ids": [
+          "example-rx-current",
+          "example-rx-old"
+        ],
+        "rationale": "Linked record entries conflict with one another and cannot be safely adjudicated."
+      },
+      "resolution": {
+        "claim_id": "claim-bd94f01037e99f6f",
+        "resolved": true,
+        "resolution_type": "later_patient_confirmation",
+        "resolving_claim_id": "claim-94bc736f7809f935",
+        "resolution_span": {
+          "turn_index": 3,
+          "start_char": 154,
+          "end_char": 226,
+          "text": "I definitely take 25 milligrams every morning; the 12.5 was my old dose."
+        },
+        "resolved_value": "carvedilol active 25 mg every morning",
+        "disputed_fields": [
+          "dose_value"
+        ],
+        "resolved_fields": [
+          "dose_value"
+        ],
+        "unresolved_fields": [],
+        "chart_conflict_remaining": true,
+        "rationale": "Later patient claim claim-94bc736f7809f935 materially establishes all disputed fields: dose_value."
+      }
+    },
+    {
+      "claim_id": "claim-8c2ca82d3a1317a7",
+      "route": "no_action",
+      "ced_score": 0.0,
+      "rank": null,
+      "recommended_action": "No additional action is indicated for the rosuvastatin claim.",
+      "routing_rationale": "All patient-asserted comparable fields are supported by the record.",
+      "claim": {
+        "claim_id": "claim-8c2ca82d3a1317a7",
+        "medication_name": "rosuvastatin",
+        "status": "active",
+        "dose_value": 10.0,
+        "dose_unit": "mg",
+        "frequency": "daily",
+        "route": "oral",
+        "negated": false,
+        "negation_span": null,
+        "adherence_gap": false,
+        "adherence_span": null,
+        "supporting_spans": [
+          {
+            "turn_index": 5,
+            "start_char": 266,
+            "end_char": 306,
+            "text": "I take rosuvastatin 10 milligrams daily."
+          }
+        ],
+        "confidence": {
+          "level": "neutral",
+          "score": 0.67,
+          "cues": [],
+          "validation_warnings": [],
+          "rationale": "No explicit hedge or booster; this is an ordinary neutral assertion."
+        },
+        "first_turn": 5,
+        "last_turn": 5,
+        "extractor": {
+          "provider": "stub",
+          "model": "fixture-schema-v2",
+          "request_id": "stub-1",
+          "schema_version": "claim-extraction-v2",
+          "attempts": 1,
+          "usage": {}
+        }
+      },
+      "divergence": {
+        "claim_id": "claim-8c2ca82d3a1317a7",
+        "relation": "support",
+        "divergence_score": 0.0,
+        "disputed_fields": [],
+        "field_comparisons": [
+          {
+            "field": "medication_name",
+            "relation": "support",
+            "claim_value": "rosuvastatin",
+            "record_values": [
+              "rosuvastatin"
+            ],
+            "evidence_ids": [
+              "example-rx-supported"
+            ],
+            "rationale": "All available medication_name evidence matches the claim."
+          },
+          {
+            "field": "dose_value",
+            "relation": "support",
+            "claim_value": 10.0,
+            "record_values": [
+              10.0
+            ],
+            "evidence_ids": [
+              "example-rx-supported"
+            ],
+            "rationale": "All available dose_value evidence matches the claim."
+          },
+          {
+            "field": "dose_unit",
+            "relation": "support",
+            "claim_value": "mg",
+            "record_values": [
+              "mg"
+            ],
+            "evidence_ids": [
+              "example-rx-supported"
+            ],
+            "rationale": "All available dose_unit evidence matches the claim."
+          },
+          {
+            "field": "frequency",
+            "relation": "support",
+            "claim_value": "daily",
+            "record_values": [
+              "daily"
+            ],
+            "evidence_ids": [
+              "example-rx-supported"
+            ],
+            "rationale": "All available frequency evidence matches the claim."
+          },
+          {
+            "field": "route",
+            "relation": "support",
+            "claim_value": "oral",
+            "record_values": [
+              "oral"
+            ],
+            "evidence_ids": [
+              "example-rx-supported"
+            ],
+            "rationale": "All available route evidence matches the claim."
+          },
+          {
+            "field": "status",
+            "relation": "support",
+            "claim_value": "active",
+            "record_values": [
+              "active"
+            ],
+            "evidence_ids": [
+              "example-rx-supported"
+            ],
+            "rationale": "All available status evidence matches the claim."
+          }
+        ],
+        "supporting_evidence_ids": [
+          "example-rx-supported"
+        ],
+        "conflicting_evidence_ids": [],
+        "rationale": "Linked record evidence accords with every assessable claimed attribute."
+      },
+      "resolution": {
+        "claim_id": "claim-8c2ca82d3a1317a7",
+        "resolved": false,
+        "resolution_type": null,
+        "resolving_claim_id": null,
+        "resolution_span": null,
+        "resolved_value": null,
+        "disputed_fields": [],
+        "resolved_fields": [],
+        "unresolved_fields": [],
+        "chart_conflict_remaining": false,
+        "rationale": "The original claim has no disputed material fields."
+      }
+    },
+    {
+      "claim_id": "claim-94bc736f7809f935",
+      "route": "no_action",
+      "ced_score": 0.75,
+      "rank": null,
+      "recommended_action": "No additional action is indicated for the carvedilol claim.",
+      "routing_rationale": "This later claim resolves an earlier patient discrepancy; the linked earlier action already owns the remaining chart cleanup.",
+      "claim": {
+        "claim_id": "claim-94bc736f7809f935",
+        "medication_name": "carvedilol",
+        "status": "active",
+        "dose_value": 25.0,
+        "dose_unit": "mg",
+        "frequency": "every morning",
+        "route": "oral",
+        "negated": false,
+        "negation_span": null,
+        "adherence_gap": false,
+        "adherence_span": null,
+        "supporting_spans": [
+          {
+            "turn_index": 3,
+            "start_char": 154,
+            "end_char": 226,
+            "text": "I definitely take 25 milligrams every morning; the 12.5 was my old dose."
+          }
+        ],
+        "confidence": {
+          "level": "emphatic",
+          "score": 1.0,
+          "cues": [
+            {
+              "type": "booster",
+              "span": {
+                "turn_index": 3,
+                "start_char": 156,
+                "end_char": 166,
+                "text": "definitely"
+              }
+            }
+          ],
+          "validation_warnings": [],
+          "rationale": "An explicit patient booster strengthens linguistic commitment."
+        },
+        "first_turn": 3,
+        "last_turn": 3,
+        "extractor": {
+          "provider": "stub",
+          "model": "fixture-schema-v2",
+          "request_id": "stub-1",
+          "schema_version": "claim-extraction-v2",
+          "attempts": 1,
+          "usage": {}
+        }
+      },
+      "divergence": {
+        "claim_id": "claim-94bc736f7809f935",
+        "relation": "source_conflict",
+        "divergence_score": 0.75,
+        "disputed_fields": [
+          "dose_value"
+        ],
+        "field_comparisons": [
+          {
+            "field": "medication_name",
+            "relation": "support",
+            "claim_value": "carvedilol",
+            "record_values": [
+              "carvedilol",
+              "carvedilol"
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "All available medication_name evidence matches the claim."
+          },
+          {
+            "field": "dose_value",
+            "relation": "source_conflict",
+            "claim_value": 25.0,
+            "record_values": [
+              25.0,
+              12.5
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "Record entries contain incompatible dose_value values."
+          },
+          {
+            "field": "dose_unit",
+            "relation": "support",
+            "claim_value": "mg",
+            "record_values": [
+              "mg",
+              "mg"
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "All available dose_unit evidence matches the claim."
+          },
+          {
+            "field": "frequency",
+            "relation": "support",
+            "claim_value": "every morning",
+            "record_values": [
+              "every morning",
+              "every morning"
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "All available frequency evidence matches the claim."
+          },
+          {
+            "field": "route",
+            "relation": "support",
+            "claim_value": "oral",
+            "record_values": [
+              "oral",
+              "oral"
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "All available route evidence matches the claim."
+          },
+          {
+            "field": "status",
+            "relation": "support",
+            "claim_value": "active",
+            "record_values": [
+              "active",
+              "active"
+            ],
+            "evidence_ids": [
+              "example-rx-current",
+              "example-rx-old"
+            ],
+            "rationale": "All available status evidence matches the claim."
+          }
+        ],
+        "supporting_evidence_ids": [
+          "example-rx-current",
+          "example-rx-old"
+        ],
+        "conflicting_evidence_ids": [
+          "example-rx-current",
+          "example-rx-old"
+        ],
+        "rationale": "Linked record entries conflict with one another and cannot be safely adjudicated."
+      },
+      "resolution": {
+        "claim_id": "claim-94bc736f7809f935",
+        "resolved": false,
+        "resolution_type": null,
+        "resolving_claim_id": null,
+        "resolution_span": null,
+        "resolved_value": null,
+        "disputed_fields": [
+          "dose_value"
+        ],
+        "resolved_fields": [],
+        "unresolved_fields": [
+          "dose_value"
+        ],
+        "chart_conflict_remaining": false,
+        "rationale": "No later patient-grounded claim addresses this discrepancy."
+      }
+    }
+  ]
+}

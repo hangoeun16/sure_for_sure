@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: python -m pip install -e '.[dev]'
+      - run: python -m pytest -q --cov=backend --cov=pipeline --cov-report=term-missing
+      - run: python -m ruff check .
+      - run: python -m mypy backend pipeline tools
+      - run: python -m compileall -q backend pipeline tools
+      - run: sure-for-sure analyze --input examples/input.example.json --provider stub --output /tmp/output.json
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm, cache-dependency-path: frontend/pnpm-lock.yaml }
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+        working-directory: frontend
+      - run: pnpm run build
+        working-directory: frontend

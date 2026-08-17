@@ -1,0 +1,9 @@
+{
+  "source": "independently authored public example",
+  "provider": "stub",
+  "records_attempted": 1,
+  "records_succeeded": 1,
+  "records_failed": 0,
+  "claims_extracted": 3,
+  "note": "Execution/schema demonstration; not an accuracy metric."
+}

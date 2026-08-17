@@ -1,0 +1,30 @@
+[
+  {
+    "case": 1,
+    "summary": {
+      "claims": 3,
+      "patient_clarifications": 0,
+      "chart_cleanup": 1,
+      "clinician_review": 0,
+      "no_action": 2
+    },
+    "actions": [
+      {
+        "medication": "carvedilol",
+        "route": "chart_cleanup",
+        "confidence": "hedged",
+        "record_relation": "source_conflict",
+        "ced_score": 0.2475,
+        "resolved": true
+      },
+      {
+        "medication": "rosuvastatin",
+        "route": "no_action",
+        "confidence": "neutral",
+        "record_relation": "support",
+        "ced_score": 0.0,
+        "resolved": false
+      }
+    ]
+  }
+]
